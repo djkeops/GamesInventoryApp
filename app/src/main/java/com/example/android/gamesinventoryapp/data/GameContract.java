@@ -70,20 +70,12 @@ public final class GameContract {
         /**
          * Possible values for the genre of the game
          */
-        public static final int GENRE_UNKNOWN = 0;
-        public static final int GENRE_ACTION = 1;
-        public static final int GENRE_STRATEGY = 2;
-        public static final int GENRE_RPG = 3;
-        public static final int GENRE_FPS = 4;
-        public static final int GENRE_SPORT = 5;
+        public static final int GENRE_RPG = 0;
 
         /**
          * Possible values for the platform of the game
          */
-        public static final int PLATFORM_PC = 0;
-        public static final int PLATFORM_XBOX_ONE = 1;
-        public static final int PLATFORM_XBOX_360 = 2;
-        public static final int PLATFORM_PS3 = 3;
-        public static final int PLATFORM_PS4 = 4;
+        public static final int PLATFORM_XBOX_ONE = 0;
+
     }
 }
