@@ -8,8 +8,6 @@ import com.example.android.gamesinventoryapp.data.GameContract.GameEntry;
 
 public class GameDbHelper extends SQLiteOpenHelper {
 
-    public static final String LOG_TAG = GameDbHelper.class.getSimpleName();
-
     /**
      * Name of the database file
      */
