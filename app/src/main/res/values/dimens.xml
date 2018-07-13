@@ -1,3 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="m_margin">16dp</dimen>
+    <dimen name="m_padding">16dp</dimen>
+    <dimen name="xs_padding">4dp</dimen>
+    <dimen name="editor_spinner_height">48dp</dimen>
 </resources>

@@ -134,7 +134,7 @@ public class GameProvider extends ContentProvider {
         }
 
         // Check that the price is valid
-        Integer price = values.getAsInteger(GameEntry.COLUMN_GAME_PRICE);
+        Double price = values.getAsDouble(GameEntry.COLUMN_GAME_PRICE);
         if (price == null || price < 0) {
             throw new IllegalArgumentException("Game requires a valid price");
         }
@@ -218,7 +218,7 @@ public class GameProvider extends ContentProvider {
 
         // If the {@link GameEntry#COLUMN_GAME_PRICE} key is present, check that the price is valid
         if (values.containsKey(GameEntry.COLUMN_GAME_PRICE)) {
-            Integer price = values.getAsInteger(GameEntry.COLUMN_GAME_PRICE);
+            Double price = values.getAsDouble(GameEntry.COLUMN_GAME_PRICE);
             if (price == null || price < 0) {
                 throw new IllegalArgumentException("Game requires a valid price");
             }

@@ -1,6 +1,38 @@
 <resources>
     <string name="app_name">Games Inventory App</string>
-    <string name="action_insert_dummy_data">Insert Dummy Game</string>
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
     <string name="result_before_count">The games table contains\u0020</string>
     <string name="result_after_count">\u0020games.\n\n</string>
+    <string name="action_delete_all_entries">Delete All Games</string>
+    <string name="label_game_name">Title:</string>
+    <string name="hint_game_name">Game Title</string>
+    <string name="label_game_genre">Genre:</string>
+    <string name="label_game_platform">Platform:</string>
+    <string name="label_game_price">Price:</string>
+    <string name="hint_game_price">0.00</string>
+    <string name="label_game_stock">Stock:</string>
+    <string name="hint_game_stock">0</string>
+    <string name="label_game_provider">Provider:</string>
+    <string name="hint_provider_name">Name</string>
+    <string name="hint_provider_phone">Phone</string>
+
+    <!-- Labels for genre dropdown menu option -->
+    <string name="genre_unknown">Unknown</string>
+    <string name="genre_action">Action</string>
+    <string name="genre_strategy">Strategy</string>
+    <string name="genre_rpg">RPG</string>
+    <string name="genre_fps">FPS</string>
+    <string name="genre_sport">Sport</string>
+
+    <!-- Labels for platform dropdown menu option -->
+    <string name="platform_pc">PC</string>
+    <string name="platform_xbox_one">Xbox One</string>
+    <string name="platform_xbox_360">Xbox 360</string>
+    <string name="platform_ps3">PS3</string>
+    <string name="platform_ps4">PS4</string>
+
+    <!-- Error messages -->
+    <string name="increment_error_message">You cannot have more than 99 games in stock</string>
+    <string name="decrement_error_message">You cannot have less than 0 games in stock</string>
+
 </resources>

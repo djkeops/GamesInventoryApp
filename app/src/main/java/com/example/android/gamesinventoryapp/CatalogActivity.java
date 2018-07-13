@@ -1,8 +1,10 @@
 package com.example.android.gamesinventoryapp;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,8 +18,14 @@ import android.widget.TextView;
 
 import com.example.android.gamesinventoryapp.data.GameContract.GameEntry;
 import com.example.android.gamesinventoryapp.data.GameDbHelper;
+import com.example.android.gamesinventoryapp.data.GameProvider;
 
 public class CatalogActivity extends AppCompatActivity {
+
+    /**
+     * Tag for the log messages
+     */
+    public static final String LOG_TAG = GameProvider.class.getSimpleName();
 
     private GameDbHelper mDbHelper;
 
@@ -28,12 +36,17 @@ public class CatalogActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
+            /*            @Override
+                        public void onClick(View view) {
+                            Snackbar.make(view, "Not yet implemented.", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }*/
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Not yet implemented.", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -47,6 +60,14 @@ public class CatalogActivity extends AppCompatActivity {
         displayDatabaseInfo();
     }
 
+    /**
+     * Helper method to delete all games in the database.
+     */
+    private void deleteAllGames() {
+        int rowsDeleted = getContentResolver().delete(GameEntry.CONTENT_URI, null, null);
+        Log.v(LOG_TAG, rowsDeleted + " rows deleted from pet database");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -56,18 +77,19 @@ public class CatalogActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_insert_dummy_data) {
-            insertData();
-            displayDatabaseInfo();
-            return true;
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId()) {
+            // Respond to a click on the "Insert dummy data" menu option
+            case R.id.action_insert_dummy_data:
+                insertData();
+                displayDatabaseInfo();
+                return true;
+            // Respond to a click on the "Delete All Games" menu option
+            case R.id.action_delete_all_entries:
+                deleteAllGames();
+                displayDatabaseInfo();
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -75,22 +97,19 @@ public class CatalogActivity extends AppCompatActivity {
      * Helper method to insert dummy game data into the database.
      */
     private void insertData() {
-        // Gets the data repository in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(GameEntry.COLUMN_GAME_NAME, "Diablo III");
         values.put(GameEntry.COLUMN_GAME_GENRE, GameEntry.GENRE_RPG);
         values.put(GameEntry.COLUMN_GAME_PLATFORM, GameEntry.PLATFORM_XBOX_ONE);
-        values.put(GameEntry.COLUMN_GAME_PRICE, 19);
+        values.put(GameEntry.COLUMN_GAME_PRICE, 19.22);
         values.put(GameEntry.COLUMN_QUANTITY, 1);
         values.put(GameEntry.COLUMN_SUPPLIER_NAME, "Blizzard");
         values.put(GameEntry.COLUMN_SUPPLIER_PHONE, "+1 (000) 000-0000");
 
-        // Insert the new row, returning the primary key value of the new row
-        long newRowId = db.insert(GameEntry.TABLE_NAME, null, values);
-        Log.v("CatalogActivity", "New row ID " + newRowId);
+        // Insert the new row and receive the new content URI
+        Uri newUri = getContentResolver().insert(GameEntry.CONTENT_URI, values);
     }
 
     /**
@@ -98,12 +117,6 @@ public class CatalogActivity extends AppCompatActivity {
      * the games database.
      */
     private void displayDatabaseInfo() {
-
-        // Instantiate the subclass of SQLiteOpenHelper and pass the context, which is the current activity
-        GameDbHelper mDbHelper = new GameDbHelper(this);
-
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {
                 GameEntry._ID,
@@ -116,11 +129,9 @@ public class CatalogActivity extends AppCompatActivity {
                 GameEntry.COLUMN_SUPPLIER_PHONE
         };
 
-        Cursor cursor = db.query(
-                GameEntry.TABLE_NAME,
+        Cursor cursor = getContentResolver().query(
+                GameEntry.CONTENT_URI,
                 projection,
-                null,
-                null,
                 null,
                 null,
                 null
@@ -158,7 +169,7 @@ public class CatalogActivity extends AppCompatActivity {
                 String currentGameName = cursor.getString(gameNameColumnIndex);
                 int currentGameGenre = cursor.getInt(gameGenreColumnIndex);
                 int currentGamePlatform = cursor.getInt(gamePlatformColumnIndex);
-                int currentGamePrice = cursor.getInt(gamePriceColumnIndex);
+                Double currentGamePrice = cursor.getDouble(gamePriceColumnIndex);
                 int currentQuantity = cursor.getInt(quantityColumnIndex);
                 String currentSupplierName = cursor.getString(supplierNameColumnIndex);
                 String currentSupplierPhone = cursor.getString(supplierPhoneColumnIndex);
