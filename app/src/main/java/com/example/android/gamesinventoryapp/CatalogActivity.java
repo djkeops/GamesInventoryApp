@@ -100,12 +100,12 @@ public class CatalogActivity extends AppCompatActivity {
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(GameEntry.COLUMN_GAME_NAME, "Diablo III");
-        values.put(GameEntry.COLUMN_GAME_GENRE, GameEntry.GENRE_RPG);
+        values.put(GameEntry.COLUMN_GAME_NAME, getString(R.string.tools_game_name));
+        values.put(GameEntry.COLUMN_GAME_GENRE, GameEntry.GENRE_ACTION);
         values.put(GameEntry.COLUMN_GAME_PLATFORM, GameEntry.PLATFORM_XBOX_ONE);
         values.put(GameEntry.COLUMN_GAME_PRICE, 19.22);
-        values.put(GameEntry.COLUMN_QUANTITY, 1);
-        values.put(GameEntry.COLUMN_SUPPLIER_NAME, "Blizzard");
+        values.put(GameEntry.COLUMN_QUANTITY, 5);
+        values.put(GameEntry.COLUMN_SUPPLIER_NAME, "2K");
         values.put(GameEntry.COLUMN_SUPPLIER_PHONE, "+1 (000) 000-0000");
 
         // Insert the new row and receive the new content URI

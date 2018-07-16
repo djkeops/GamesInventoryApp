@@ -139,8 +139,8 @@
             <!-- Add 1 stock button -->
             <ImageButton
                 android:id="@+id/minus_stock"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/stock_buttons_dimen"
+                android:layout_height="@dimen/stock_buttons_dimen"
                 android:background="@drawable/ic_remove_circle_24dp"
                 android:backgroundTint="@color/colorAccent" />
 
@@ -148,7 +148,7 @@
             <EditText
                 android:id="@+id/edit_game_stock"
                 style="@style/EditorFieldStyle"
-                android:layout_width="40dp"
+                android:layout_width="@dimen/stock_edit_text_width"
                 android:hint="@string/hint_game_stock"
                 android:inputType="number"
                 android:textAlignment="viewEnd" />
@@ -156,8 +156,8 @@
             <!-- Remove 1 from stock button -->
             <ImageButton
                 android:id="@+id/plus_stock"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/stock_buttons_dimen"
+                android:layout_height="@dimen/stock_buttons_dimen"
                 android:background="@drawable/ic_add_circle_24dp"
                 android:backgroundTint="@color/colorAccent" />
 

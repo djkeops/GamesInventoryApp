@@ -4,6 +4,7 @@
     <string name="result_before_count">The games table contains\u0020</string>
     <string name="result_after_count">\u0020games.\n\n</string>
     <string name="action_delete_all_entries">Delete All Games</string>
+    <string name="sell_button_text">Sell 1 pc</string>
     <string name="label_game_name">Title:</string>
     <string name="hint_game_name">Game Title</string>
     <string name="label_game_genre">Genre:</string>
@@ -34,5 +35,16 @@
     <!-- Error messages -->
     <string name="increment_error_message">You cannot have more than 99 games in stock</string>
     <string name="decrement_error_message">You cannot have less than 0 games in stock</string>
+
+    <!-- Tools values  -->
+    <string name="tools_game_name">Mafia III</string>
+    <string name="tools_game_genre">Genre: Action</string>
+    <string name="tools_game_platform">Platform: Xbox One</string>
+    <string name="tools_game_price">Price: 19.22 &#x20AC;</string>
+    <string name="tools_game_stock">Left in stock: 5</string>
+
+    <!-- Strings for CatalogActivity  -->
+    <string name="before_price_text">Price:</string>
+
 
 </resources>
