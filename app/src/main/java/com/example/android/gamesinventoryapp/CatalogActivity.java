@@ -1,33 +1,42 @@
 package com.example.android.gamesinventoryapp;
 
+import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.example.android.gamesinventoryapp.data.GameContract.GameEntry;
-import com.example.android.gamesinventoryapp.data.GameDbHelper;
-import com.example.android.gamesinventoryapp.data.GameProvider;
 
-public class CatalogActivity extends AppCompatActivity {
+/**
+ * Displays list of games that were entered and stored in the app.
+ */
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
      * Tag for the log messages
      */
-    public static final String LOG_TAG = GameProvider.class.getSimpleName();
+    public static final String LOG_TAG = CatalogActivity.class.getSimpleName();
 
-    private GameDbHelper mDbHelper;
+    /**
+     * Identifier for the games data loader
+     */
+    private static final int GAMES_LOADER = 0;
+
+    GameCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +45,9 @@ public class CatalogActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Setup FAB to open EditorActivity
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-            /*            @Override
-                        public void onClick(View view) {
-                            Snackbar.make(view, "Not yet implemented.", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-                        }*/
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
@@ -50,14 +55,38 @@ public class CatalogActivity extends AppCompatActivity {
             }
         });
 
-        // Instantiate the subclass of SQLiteOpenHelper and pass the context, which is the current activity
-        mDbHelper = new GameDbHelper(this);
-    }
+        // Find the ListView which will be populated with the games data
+        ListView gamesListView = findViewById(R.id.list);
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
+        // TODO: Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+
+        // Setup an Adapter to create a list item for each row of game data in Cursor.
+        // There is no game data yet (until the loader finishes) so pass in null for the Cursor
+        mCursorAdapter = new GameCursorAdapter(this, null);
+        gamesListView.setAdapter(mCursorAdapter);
+
+        // Setup item click listener
+        gamesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                // Create new intent to go to {@link EditorActivity}
+                Intent intent = new Intent(CatalogActivity.this, EditorActivity.class);
+
+                // Form the content URI that represents the specific game that was clicked on,
+                // by appending the "id" (passed as input to this method) onto the
+                // {@link GameEntry#CONTENT_URI}.
+                Uri currentGameUri = ContentUris.withAppendedId(GameEntry.CONTENT_URI, id);
+
+                // Set the URI on the data field of the intent
+                intent.setData(currentGameUri);
+
+                // Launch the {@link EditorActivity] to display tha data for the current game.
+                startActivity(intent);
+            }
+        });
+
+        // Kick off the loader
+        getLoaderManager().initLoader(GAMES_LOADER, null, this);
     }
 
     /**
@@ -65,7 +94,7 @@ public class CatalogActivity extends AppCompatActivity {
      */
     private void deleteAllGames() {
         int rowsDeleted = getContentResolver().delete(GameEntry.CONTENT_URI, null, null);
-        Log.v(LOG_TAG, rowsDeleted + " rows deleted from pet database");
+        Log.v(LOG_TAG, rowsDeleted + " rows deleted from games database");
     }
 
     @Override
@@ -82,12 +111,10 @@ public class CatalogActivity extends AppCompatActivity {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
                 insertData();
-                displayDatabaseInfo();
                 return true;
             // Respond to a click on the "Delete All Games" menu option
             case R.id.action_delete_all_entries:
                 deleteAllGames();
-                displayDatabaseInfo();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -112,82 +139,38 @@ public class CatalogActivity extends AppCompatActivity {
         Uri newUri = getContentResolver().insert(GameEntry.CONTENT_URI, values);
     }
 
-    /**
-     * Temporary helper method to display information in the onscreen TextView about the state of
-     * the games database.
-     */
-    private void displayDatabaseInfo() {
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
+        // Define a projection that specifies the columns from the table we care about.
         String[] projection = {
                 GameEntry._ID,
                 GameEntry.COLUMN_GAME_NAME,
                 GameEntry.COLUMN_GAME_GENRE,
                 GameEntry.COLUMN_GAME_PLATFORM,
                 GameEntry.COLUMN_GAME_PRICE,
-                GameEntry.COLUMN_QUANTITY,
-                GameEntry.COLUMN_SUPPLIER_NAME,
-                GameEntry.COLUMN_SUPPLIER_PHONE
-        };
+                GameEntry.COLUMN_QUANTITY};
 
-        Cursor cursor = getContentResolver().query(
+        // This loader will execute the ContentProvider's query method on a background thread
+        return new CursorLoader(this,
                 GameEntry.CONTENT_URI,
                 projection,
                 null,
                 null,
-                null
-        );
+                null);
 
-        // Find the TextView where the query result will be displayed
-        TextView resultView = findViewById(R.id.temporary_result_view);
-
-        try {
-            String countText = getString(R.string.result_before_count) + cursor.getCount() + getString(R.string.result_after_count);
-            resultView.setText(countText);
-            resultView.append(GameEntry._ID + " - " +
-                    GameEntry.COLUMN_GAME_NAME + " - " +
-                    GameEntry.COLUMN_GAME_GENRE + " - " +
-                    GameEntry.COLUMN_GAME_PLATFORM + " - " +
-                    GameEntry.COLUMN_GAME_PRICE + " - " +
-                    GameEntry.COLUMN_QUANTITY + " - " +
-                    GameEntry.COLUMN_SUPPLIER_NAME + " - " +
-                    GameEntry.COLUMN_SUPPLIER_PHONE + "\n");
-
-            // Identify the index of each column
-            int idColumnIndex = cursor.getColumnIndex(GameEntry._ID);
-            int gameNameColumnIndex = cursor.getColumnIndex(GameEntry.COLUMN_GAME_NAME);
-            int gameGenreColumnIndex = cursor.getColumnIndex(GameEntry.COLUMN_GAME_GENRE);
-            int gamePlatformColumnIndex = cursor.getColumnIndex(GameEntry.COLUMN_GAME_PLATFORM);
-            int gamePriceColumnIndex = cursor.getColumnIndex(GameEntry.COLUMN_GAME_PRICE);
-            int quantityColumnIndex = cursor.getColumnIndex(GameEntry.COLUMN_QUANTITY);
-            int supplierNameColumnIndex = cursor.getColumnIndex(GameEntry.COLUMN_SUPPLIER_NAME);
-            int supplierPhoneColumnIndex = cursor.getColumnIndex(GameEntry.COLUMN_SUPPLIER_PHONE);
-
-            // For each row in the cursor display the values
-            while (cursor.moveToNext()) {
-                // Extract the values from the current row
-                int currentId = cursor.getInt(idColumnIndex);
-                String currentGameName = cursor.getString(gameNameColumnIndex);
-                int currentGameGenre = cursor.getInt(gameGenreColumnIndex);
-                int currentGamePlatform = cursor.getInt(gamePlatformColumnIndex);
-                Double currentGamePrice = cursor.getDouble(gamePriceColumnIndex);
-                int currentQuantity = cursor.getInt(quantityColumnIndex);
-                String currentSupplierName = cursor.getString(supplierNameColumnIndex);
-                String currentSupplierPhone = cursor.getString(supplierPhoneColumnIndex);
-
-                // Display in the resultView the values for each column
-                resultView.append(("\n" + currentId + " - " +
-                        currentGameName + " - " +
-                        currentGameGenre + " - " +
-                        currentGamePlatform + " - " +
-                        currentGamePrice + " - " +
-                        currentQuantity + " - " +
-                        currentSupplierName + " - " +
-                        currentSupplierPhone));
-            }
-        } finally {
-            // Close the cursor
-            cursor.close();
-        }
     }
 
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        // Update {@link GameCursorAdapter} with this new cursor containing updated games data
+        mCursorAdapter.swapCursor(cursor);
+    }
+
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // Callback called when the data needs to be deleted
+        mCursorAdapter.swapCursor(null);
+    }
 }

@@ -8,9 +8,9 @@
     tools:context=".CatalogActivity"
     tools:showIn="@layout/activity_catalog">
 
-    <TextView
-        android:id="@+id/temporary_result_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </android.support.constraint.ConstraintLayout>

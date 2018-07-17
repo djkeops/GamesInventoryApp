@@ -73,57 +73,62 @@ public class GameCursorAdapter extends CursorAdapter {
         int gameGenre = cursor.getInt(genreColumnIndex);
         int gamePlatform = cursor.getInt(platformColumnIndex);
         Double gamePrice = cursor.getDouble(priceColumnIndex);
-        int gameStock = cursor.getInt(stockColumnIndex);
+        String gameStock = cursor.getString(stockColumnIndex);
 
         // Update the name TextView with the name of the current game
         nameTextView.setText(gameName);
 
         // Update the genre TextView with the genre of the current game
+        String genreText = context.getString(R.string.before_genre_text);
         switch (gameGenre) {
             case GameEntry.GENRE_ACTION:
-                genreTextView.setText(context.getString(R.string.genre_action));
+                genreText += context.getString(R.string.genre_action);
                 break;
             case GameEntry.GENRE_FPS:
-                genreTextView.setText(context.getString(R.string.genre_fps));
+                genreText += context.getString(R.string.genre_fps);
                 break;
             case GameEntry.GENRE_RPG:
-                genreTextView.setText(context.getString(R.string.genre_rpg));
+                genreText += context.getString(R.string.genre_rpg);
                 break;
             case GameEntry.GENRE_STRATEGY:
-                genreTextView.setText(context.getString(R.string.genre_strategy));
+                genreText += context.getString(R.string.genre_strategy);
                 break;
             case GameEntry.GENRE_SPORT:
-                genreTextView.setText(context.getString(R.string.genre_sport));
+                genreText += context.getString(R.string.genre_sport);
                 break;
             default:
-                genreTextView.setText(context.getString(R.string.genre_unknown));
+                genreText += context.getString(R.string.genre_unknown);
                 break;
         }
+        genreTextView.setText(genreText);
 
         // Update the platform TextView with the platform of the current game
+        String platformText = context.getString(R.string.before_platform_text);
         switch (gamePlatform) {
             case GameEntry.PLATFORM_PC:
-                platformTextView.setText(context.getString(R.string.platform_pc));
+                platformText += context.getString(R.string.platform_pc);
                 break;
             case GameEntry.PLATFORM_XBOX_ONE:
-                platformTextView.setText(context.getString(R.string.platform_xbox_one));
+                platformText += context.getString(R.string.platform_xbox_one);
                 break;
             case GameEntry.PLATFORM_XBOX_360:
-                platformTextView.setText(context.getString(R.string.platform_xbox_360));
+                platformText += context.getString(R.string.platform_xbox_360);
                 break;
             case GameEntry.PLATFORM_PS3:
-                platformTextView.setText(context.getString(R.string.platform_ps3));
+                platformText += context.getString(R.string.platform_ps3);
                 break;
             case GameEntry.PLATFORM_PS4:
-                platformTextView.setText(context.getString(R.string.platform_ps4));
+                platformText += context.getString(R.string.platform_ps4);
                 break;
         }
+        platformTextView.setText(platformText);
 
         // Update the price TextView with the price of the current game
         String priceText = context.getString(R.string.before_price_text) + NumberFormat.getCurrencyInstance().format(gamePrice);
         priceTextView.setText(priceText);
 
         // Update the stock TextView with the available stock for the current game
-        stockTextView.setText(gameStock);
+        String stockText = context.getString(R.string.before_stock_text) + gameStock;
+        stockTextView.setText(stockText);
     }
 }
