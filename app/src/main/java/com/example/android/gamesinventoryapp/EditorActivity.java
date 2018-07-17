@@ -16,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.gamesinventoryapp.data.GameContract.GameEntry;
@@ -270,13 +269,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
-    /**
-     * Get user input from editor and save game into database.
-     */
-
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-
         // Define a projection that contains all columns from the games table.
         String[] projection = {
                 GameEntry._ID,
