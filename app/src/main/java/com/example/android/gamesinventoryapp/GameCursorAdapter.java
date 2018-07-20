@@ -1,12 +1,17 @@
 package com.example.android.gamesinventoryapp;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.gamesinventoryapp.data.GameContract.GameEntry;
 
@@ -53,15 +58,15 @@ public class GameCursorAdapter extends CursorAdapter {
      *                correct row.
      */
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        // Find individual views that we want to modify in the list item layout
+    public void bindView(View view, final Context context, Cursor cursor) {
+        // Find the TextViews
         TextView nameTextView = view.findViewById(R.id.game_name);
         TextView genreTextView = view.findViewById(R.id.game_genre);
         TextView platformTextView = view.findViewById(R.id.game_platform);
         TextView priceTextView = view.findViewById(R.id.game_price);
         TextView stockTextView = view.findViewById(R.id.game_stock);
 
-        // Find the columns of the game attributes that we're interested in
+        // Find the columns indexes of the game attributes
         int nameColumnIndex = cursor.getColumnIndex(GameEntry.COLUMN_GAME_NAME);
         int genreColumnIndex = cursor.getColumnIndex(GameEntry.COLUMN_GAME_GENRE);
         int platformColumnIndex = cursor.getColumnIndex(GameEntry.COLUMN_GAME_PLATFORM);
@@ -73,7 +78,7 @@ public class GameCursorAdapter extends CursorAdapter {
         int gameGenre = cursor.getInt(genreColumnIndex);
         int gamePlatform = cursor.getInt(platformColumnIndex);
         Double gamePrice = cursor.getDouble(priceColumnIndex);
-        String gameStock = cursor.getString(stockColumnIndex);
+        final String gameStock = cursor.getString(stockColumnIndex);
 
         // Update the name TextView with the name of the current game
         nameTextView.setText(gameName);
@@ -130,5 +135,38 @@ public class GameCursorAdapter extends CursorAdapter {
         // Update the stock TextView with the available stock for the current game
         String stockText = context.getString(R.string.before_stock_text) + gameStock;
         stockTextView.setText(stockText);
+
+        // Find the sell button
+        Button sellButton = view.findViewById(R.id.sell_button);
+
+        // Get the int value of the current stock quantity
+        final int gameStockInt = Integer.valueOf(gameStock);
+        // Get the id of the current game
+        final int id = cursor.getInt(cursor.getColumnIndex(GameEntry._ID));
+
+
+        // Create a click listener to handle the sell of an item by decreasing the stock quantity
+        sellButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (gameStockInt > 0) {
+                    int updatedGameStockInt = gameStockInt - 1;
+
+                    // Update the stock of the game in the database
+                    Uri currentGameUri = ContentUris.withAppendedId(GameEntry.CONTENT_URI, id);
+                    ContentValues values = new ContentValues();
+                    values.put(GameEntry.COLUMN_QUANTITY, updatedGameStockInt);
+                    context.getContentResolver().update(currentGameUri, values, null, null);
+
+                    // If the new quantity is 0 then inform the user
+                    if (updatedGameStockInt == 0) {
+                        Toast.makeText(context, R.string.out_of_stock_msg, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(context, R.string.out_of_stock_msg, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }

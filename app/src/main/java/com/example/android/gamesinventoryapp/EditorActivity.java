@@ -292,6 +292,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 TextUtils.isEmpty(supplierNameString) && TextUtils.isEmpty(supplierPhoneString) && mGenre == GameEntry.GENRE_UNKNOWN && mPlatform == GameEntry.PLATFORM_PC) {
             // Since no fields were modified, we can return early without creating a new game.
             // No need to create ContentValues and no need to do any ContentProvider operations.
+            finish();
+            return;
+        }
+
+        if (TextUtils.isEmpty(nameString)) {
+            mNameEditText.setError("Name field is mandatory");
+            return;
+        }
+
+        if (TextUtils.isEmpty(supplierNameString)) {
+            mProviderNameEditText.setError("Supplier name field is mandatory");
             return;
         }
 
@@ -344,7 +355,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 // Otherwise, the update was successful and we can display a toast.
                 Toast.makeText(this, R.string.editor_update_game_successful, Toast.LENGTH_SHORT).show();
             }
+
         }
+        // Exit editor activity
+        finish();
     }
 
     @Override
@@ -374,8 +388,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             case R.id.action_save:
                 // Save the game into database
                 saveGame();
-                // Exit editor activity
-                finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:

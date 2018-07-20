@@ -48,6 +48,7 @@
     <string name="before_platform_text">Platform:\u0020</string>
     <string name="before_price_text">Price:\u0020</string>
     <string name="before_stock_text">Left in stock:\u0020</string>
+    <string name="out_of_stock_msg">Out of stock!</string>
 
     <!-- Strings for EditorActivity  -->
     <string name="editor_activity_title_new_game">Add a new Game</string>
