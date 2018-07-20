@@ -55,5 +55,23 @@
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
 
+    <!-- Toast messages for insert, update and delete operations -->
+    <string name="editor_insert_game_failed">Error with saving the game</string>
+    <string name="editor_insert_game_successful">Game saved</string>
+    <string name="editor_update_game_failed">Error with updating the game</string>
+    <string name="editor_update_game_successful">Game updated</string>
+    <string name="editor_delete_game_failed">Error with deleting the game</string>
+    <string name="editor_delete_game_successful">Game deleted</string>
+
+    <!-- Strings for UnsavedChangesDialog -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard_option">Discard</string>
+    <string name="keep_editing_option">Keep Editing</string>
+
+
+    <!-- Strings for DeleteConfirmationDialog -->
+    <string name="delete_dialog_msg">Delete this game?</string>
+    <string name="delete_option">Delete</string>
+    <string name="cancel_option">Cancel</string>
 
 </resources>

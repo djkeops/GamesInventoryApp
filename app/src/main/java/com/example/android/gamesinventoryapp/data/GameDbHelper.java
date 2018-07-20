@@ -38,7 +38,7 @@ public class GameDbHelper extends SQLiteOpenHelper {
                 + GameEntry.COLUMN_GAME_NAME + " TEXT NOT NULL, "
                 + GameEntry.COLUMN_GAME_GENRE + " INTEGER NOT NULL, "
                 + GameEntry.COLUMN_GAME_PLATFORM + " INTEGER NOT NULL, "
-                + GameEntry.COLUMN_GAME_PRICE + " REAL NOT NULL DEFAULT 0, "
+                + GameEntry.COLUMN_GAME_PRICE + " REAL NOT NULL DEFAULT 0.00, "
                 + GameEntry.COLUMN_QUANTITY + " INTEGER NOT NULL DEFAULT 0, "
                 + GameEntry.COLUMN_SUPPLIER_NAME + " TEXT NOT NULL, "
                 + GameEntry.COLUMN_SUPPLIER_PHONE + " TEXT);";

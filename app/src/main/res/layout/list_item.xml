@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:baselineAligned="false"
     android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants"
     android:padding="@dimen/m_padding">
 
     <LinearLayout
