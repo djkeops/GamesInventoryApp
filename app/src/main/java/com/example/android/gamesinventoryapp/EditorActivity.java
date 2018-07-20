@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -103,6 +104,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+        // Find the call supplier button
+        Button callSupplierButton = findViewById(R.id.call_supplier_button);
+
         // Examine the intent that was used to launch this activity,
         // in order to figure out if we're creating a new game or editing an existing one.
         Intent intent = getIntent();
@@ -122,6 +126,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Initialize a loader to read the game data from the database
             // and display the current values in the editor
             getLoaderManager().initLoader(EXISTING_GAME_LOADER, null, this);
+
+            // Set the call supplier button to be visible
+            callSupplierButton.setVisibility(View.VISIBLE);
         }
 
         // Find all relevant views that we will need to read user input from
@@ -183,8 +190,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mIncreaseStockButton.setOnTouchListener(mTouchListener);
         mDecreaseStockButton.setOnTouchListener(mTouchListener);
 
+        // Setup the spinners
         setupGenreSpinner();
         setupPlatformSpinner();
+
+        // Setup the call supplier button listener
+        callSupplierButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callSupplier(mProviderPhoneEditText.getText().toString().trim());
+            }
+        });
     }
 
     /**
@@ -620,6 +636,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Create and show the AlertDialog
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    /**
+     * Open phone app to call the game supplier
+     */
+    public void callSupplier(String supplierPhone) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + supplierPhone));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
 }

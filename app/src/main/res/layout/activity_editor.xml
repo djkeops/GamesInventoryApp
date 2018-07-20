@@ -214,6 +214,17 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <Button
+                android:id="@+id/call_supplier_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@color/colorAccent"
+                android:drawablePadding="@dimen/s_padding"
+                android:drawableStart="@drawable/ic_call_24dp"
+                android:text="@string/call_supplier_button_text"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
 
         </LinearLayout>
     </LinearLayout>

@@ -55,6 +55,8 @@
     <string name="editor_activity_title_edit_game">Edit Game</string>
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
+    <string name="call_supplier_button_text">Call Supplier</string>
+
 
     <!-- Toast messages for insert, update and delete operations -->
     <string name="editor_insert_game_failed">Error with saving the game</string>
