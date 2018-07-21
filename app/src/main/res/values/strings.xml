@@ -49,6 +49,7 @@
     <string name="before_price_text">Price:\u0020</string>
     <string name="before_stock_text">Left in stock:\u0020</string>
     <string name="out_of_stock_msg">Out of stock!</string>
+    <string name="instructions_text">Press + button to add a new game\n in your inventory (title, genre, platform\n and provider name are required fields)</string>
 
     <!-- Strings for EditorActivity  -->
     <string name="editor_activity_title_new_game">Add a new Game</string>
@@ -56,7 +57,6 @@
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
     <string name="call_supplier_button_text">Call Supplier</string>
-
 
     <!-- Toast messages for insert, update and delete operations -->
     <string name="editor_insert_game_failed">Error with saving the game</string>
@@ -70,7 +70,6 @@
     <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
     <string name="discard_option">Discard</string>
     <string name="keep_editing_option">Keep Editing</string>
-
 
     <!-- Strings for DeleteConfirmationDialog -->
     <string name="delete_dialog_msg">Delete this game?</string>

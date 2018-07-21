@@ -58,7 +58,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         // Find the ListView which will be populated with the games data
         ListView gamesListView = findViewById(R.id.list);
 
-        // TODO: Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
+        View emptyView = findViewById(R.id.empty_view);
+        gamesListView.setEmptyView(emptyView);
 
         // Setup an Adapter to create a list item for each row of game data in Cursor.
         // There is no game data yet (until the loader finishes) so pass in null for the Cursor
