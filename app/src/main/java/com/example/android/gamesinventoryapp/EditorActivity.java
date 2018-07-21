@@ -27,8 +27,6 @@ import android.widget.Toast;
 
 import com.example.android.gamesinventoryapp.data.GameContract.GameEntry;
 
-import java.text.NumberFormat;
-
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
@@ -545,6 +543,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPlatformSpinner.setSelection(0);
     }
 
+    /**
+     * Show unsaved changes dialog
+     */
     private void showUnsavedChangesDialog(DialogInterface.OnClickListener discardButtonClickListener) {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the positive and negative buttons on the dialog.
@@ -554,7 +555,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setNegativeButton(R.string.keep_editing_option, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the game.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -612,6 +613,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         finish();
     }
 
+    /**
+     * Show delete confirmation dialog
+     */
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the postivie and negative buttons on the dialog.
@@ -619,7 +623,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete_option, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Delete" button, so delete the pet.
+                // User clicked the "Delete" button, so delete the game.
                 deleteGame();
             }
         });
