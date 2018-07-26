@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingStart="@dimen/xs_padding">
+            android:paddingStart="@dimen/m_padding">
 
             <!-- Price field -->
             <EditText
@@ -118,7 +118,7 @@
                 style="@style/EditorFieldStyle"
                 android:hint="@string/hint_game_price"
                 android:inputType="numberDecimal"
-                android:maxLength="4"
+                android:maxLength="5"
                 android:textAlignment="viewEnd" />
 
         </LinearLayout>
